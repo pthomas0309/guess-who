@@ -13,8 +13,8 @@ function displayImages(){
     for (let person of people){
         console.log(person);
         $('#profileImages').append(`
-        <div data-name=${person.name}>
-            <img src="https://github.com/${person.githubUsername}.png?size=250" alt="Profile image of ${person.name}">
+        <div data-name=${person.name} class="guessWho">
+            <img class="rounded" src="https://github.com/${person.githubUsername}.png?size=250" alt="Profile image of ${person.name}">
         </div>
         `)
     }
@@ -40,23 +40,28 @@ function promptUser(){
     let pictureSelector = randomNumber(0, people.length - 1);
     for (let person of people){
         if (pictureSelector === people.indexOf(person)){
-            $('#userPrompt').append(`<p>${person.name}</p.`);
+            $('#userPrompt').append(`<p class="randomName">${person.name}</p.`);
         } else {
-            console.log('No matching value');
+            console.log('Randomizing');
         }
     }
 }
 
 function evaluateCorrectAnswer(){
     let nameOfSelection = $(this).data('name');
-    let correctAnswer = $('#userPrompt').children().text()
+    let correctAnswer = $('#userPrompt').children().text();
     if (nameOfSelection === correctAnswer){
-        alert("You got it! Go again?")
-        displayImages();
-        $('#userPrompt').empty();
-        promptUser();
+        $(this).addClass('p-3 mb-2 bg-success');
+        setTimeout(restartGame, 2 * 1000);
     }
     else {
         alert("Not quite right, give it another shot.");
     }
+}
+
+function restartGame(){
+    alert("You got it! Go again?");
+    displayImages();
+    $('#userPrompt').empty();
+    promptUser();
 }
